@@ -5,9 +5,10 @@ my_dict = {
     'set': {8, 'm', 4.3, 2, 9}
 }
 
+print(my_dict['tuple'][-1])
 my_dict['list'].append('new')
-my_dict['list'].pop(2)
-my_dict['dict']['i am a tuple'] = (888, 888, 888)
+my_dict['list'].pop(1)
+my_dict['dict'][('i am a tuple',)] = (888, 888, 888)
 my_dict['dict'].pop('two')
 my_dict['set'].add(777)
 my_dict['set'].remove(8)
