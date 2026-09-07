@@ -11,4 +11,5 @@ def get_numbers_and_add(new_str):
         if word.isnumeric():
             print(int(word) + 10)
 
+
 get_numbers_and_add(result_strings)

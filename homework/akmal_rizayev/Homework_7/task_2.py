@@ -4,4 +4,5 @@ def print_words(dictionary):
     for word, repeats in dictionary.items():
         print(word * repeats)
 
+
 print_words(words)
