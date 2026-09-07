@@ -5,6 +5,7 @@ result_strings = '''результат операции: 42
 результат работы программы: 209
 результат: 2'''
 
+
 def get_numbers_and_add(new_str):
     words_in_str = new_str.split()
     for word in words_in_str:
