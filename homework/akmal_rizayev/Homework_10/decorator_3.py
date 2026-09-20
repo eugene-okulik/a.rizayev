@@ -16,6 +16,7 @@ def calc_dec(func):
 
     return wrapper
 
+
 @calc_dec
 def calc(first, second, operation):
     if operation == '+':
