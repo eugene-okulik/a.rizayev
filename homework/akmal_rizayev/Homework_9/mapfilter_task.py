@@ -5,3 +5,4 @@ new_list = list(filter(lambda x: x > 28, temperatures))
 
 print(max(new_list))
 print(min(new_list))
+print(sum(temperatures) / len(temperatures))
