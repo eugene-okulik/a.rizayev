@@ -43,12 +43,17 @@ class Bouquet:
     def sort_by(self, param):
         self.flowers.sort(key=lambda x: getattr(x, param))
 
-    def find_flower(self, param, value):
+    def find_flowers(self, param, value):
+        is_found = False
+        found_flowers = []
         for flower in self.flowers:
             if getattr(flower, param) == value:
-                return f'Найден: {str(flower)}'
-        else:
+                is_found = True
+                found_flowers.append(flower)
+        if not is_found:
             return 'Не найден'
+        else:
+            return found_flowers
 
     def __str__(self):
         result = ''
@@ -60,7 +65,7 @@ class Bouquet:
 
 
 flower_1 = Rose(2, 10, 'white', 50, 5.5, 'Russia')
-flower_2 = Dandelion(5, 8, 'yellow', 48, 3.5, 2)
+flower_2 = Dandelion(5, 6, 'yellow', 48, 3.5, 2)
 flower_3 = Magnolia(3, 6, 'purple', 30, 4.5, 'big')
 
 bouquet_1 = Bouquet([flower_1, flower_2, flower_3])
@@ -69,4 +74,4 @@ bouquet_1.sort_by('life_time')
 
 print(bouquet_1)
 
-print(bouquet_1.find_flower('freshness', 6))
+print(bouquet_1.find_flowers('freshness', 6))
