@@ -59,8 +59,6 @@ class Bouquet:
         return result
 
 
-
-
 flower_1 = Rose(2, 10, 'white', 50, 5.5, 'Russia')
 flower_2 = Dandelion(5, 8, 'yellow', 48, 3.5, 2)
 flower_3 = Magnolia(3, 6, 'purple', 30, 4.5, 'big')
