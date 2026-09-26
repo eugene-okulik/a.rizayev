@@ -1,5 +1,3 @@
-from random import random
-
 import mysql.connector as mysql
 
 db = mysql.connect(
