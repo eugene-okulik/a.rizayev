@@ -1,3 +1,5 @@
+import random
+
 import mysql.connector as mysql
 
 db = mysql.connect(
@@ -10,43 +12,49 @@ db = mysql.connect(
 
 cursor = db.cursor()
 
-cursor.execute("INSERT INTO students (name, second_name) VALUES ('Gena', 'Bukin4')")
+
+def insert_book(book_name, stud_id, cur):
+    cur.execute("INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)", (book_name, stud_id))
+
+
+def insert_subject(subj_name, cur):
+    cur.execute("INSERT INTO subjects (title) VALUES (%s)", (subj_name,))
+
+
+def insert_lesson(lesson_name, subject_id, cur):
+    cur.execute("INSERT INTO lessons (title, subject_id) VALUES (%s, %s)",
+                   (lesson_name, subject_id))
+
+
+books = ('2 mushketera', '3 mushketera')
+subjects = ('Chemistry', 'Geography', 'Physics')
+lessons = ('Урок 01', 'Урок 02')
+
+cursor.execute("INSERT INTO students (name, second_name) VALUES ('Gena', 'Bukin5')")
 student_id = cursor.lastrowid
 cursor.execute("INSERT INTO `groups` (title, start_date, end_date)"
-               " VALUES ('Schastlivy vmeste 4', 'Apr 2005', 'May 2010')")
+               " VALUES ('Schastlivy vmeste 5', 'Apr 2005', 'May 2010')")
 group_id = cursor.lastrowid
 query = "UPDATE students SET group_id = %s WHERE id = %s"
 cursor.execute(query, (group_id, student_id))
 
-cursor.execute("INSERT INTO books (title, taken_by_student_id) VALUES ('1 Porosenok', %s)", (student_id,))
-cursor.execute("INSERT INTO books (title, taken_by_student_id) VALUES ('2 Porosenka', %s)", (student_id,))
+for book in books:
+    insert_book(book, student_id, cursor)
 
-cursor.execute("INSERT INTO subjects (title) VALUES ('Novaya Matematika')")
-subj1_id = cursor.lastrowid
-cursor.execute("INSERT INTO subjects (title) VALUES ('Novaya Fizika')")
-subj2_id = cursor.lastrowid
+subject_ids = []
+for subject in subjects:
+    insert_subject(subject, cursor)
+    subject_ids.append(cursor.lastrowid)
 
-cursor.execute("INSERT INTO lessons (title, subject_id) VALUES ('Lesson 1', %s)",
-               (subj1_id,))
-lesson_1 = cursor.lastrowid
-cursor.execute("INSERT INTO lessons (title, subject_id) VALUES ('Lesson 2', %s)",
-               (subj1_id,))
-lesson_2 = cursor.lastrowid
-cursor.execute("INSERT INTO lessons (title, subject_id) VALUES ('Lesson first', %s)",
-               (subj2_id,))
-lesson_3 = cursor.lastrowid
-cursor.execute("INSERT INTO lessons (title, subject_id) VALUES ('Lesson second', %s)",
-               (subj2_id,))
-lesson_4 = cursor.lastrowid
+lesson_ids = []
+for subject_id in subject_ids:
+    for lesson in lessons:
+        insert_lesson(lesson, subject_id, cursor)
+        lesson_ids.append(cursor.lastrowid)
 
-cursor.execute("INSERT INTO marks (value, lesson_id, student_id) VALUES ('65', %s, %s)",
-               (lesson_1, student_id))
-cursor.execute("INSERT INTO marks (value, lesson_id, student_id) VALUES ('66', %s, %s)",
-               (lesson_2, student_id))
-cursor.execute("INSERT INTO marks (value, lesson_id, student_id) VALUES ('67', %s, %s)",
-               (lesson_3, student_id))
-cursor.execute("INSERT INTO marks (value, lesson_id, student_id) VALUES ('68', %s, %s)",
-               (lesson_4, student_id))
+vals = [(str(random.randint(1,100)), lesson_id, student_id) for lesson_id in lesson_ids]
+cursor.executemany("INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)",
+                   vals)
 
 cursor.execute("SELECT value from marks m WHERE m.student_id = %s",
                (student_id,))
