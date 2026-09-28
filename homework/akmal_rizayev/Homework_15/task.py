@@ -22,8 +22,7 @@ def insert_subject(subj_name, cur):
 
 
 def insert_lesson(lesson_name, subject_id, cur):
-    cur.execute("INSERT INTO lessons (title, subject_id) VALUES (%s, %s)",
-                   (lesson_name, subject_id))
+    cur.execute("INSERT INTO lessons (title, subject_id) VALUES (%s, %s)", (lesson_name, subject_id))
 
 
 books = ('2 mushketera', '3 mushketera')
@@ -52,9 +51,8 @@ for subject_id in subject_ids:
         insert_lesson(lesson, subject_id, cursor)
         lesson_ids.append(cursor.lastrowid)
 
-vals = [(str(random.randint(1,100)), lesson_id, student_id) for lesson_id in lesson_ids]
-cursor.executemany("INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)",
-                   vals)
+vals = [(str(random.randint(1, 100)), lesson_id, student_id) for lesson_id in lesson_ids]
+cursor.executemany("INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)", vals)
 
 cursor.execute("SELECT value from marks m WHERE m.student_id = %s",
                (student_id,))
