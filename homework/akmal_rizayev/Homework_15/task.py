@@ -13,43 +13,39 @@ db = mysql.connect(
 cursor = db.cursor()
 
 
-def insert_book(book_name, stud_id, cur):
-    cur.execute("INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)", (book_name, stud_id))
-
-
 def insert_subject(subj_name, cur):
     cur.execute("INSERT INTO subjects (title) VALUES (%s)", (subj_name,))
+    return cur.lastrowid
 
 
 def insert_lesson(lesson_name, subject_id, cur):
     cur.execute("INSERT INTO lessons (title, subject_id) VALUES (%s, %s)", (lesson_name, subject_id))
+    return cur.lastrowid
 
 
-books = ('2 mushketera', '3 mushketera')
-subjects = ('Chemistry', 'Geography', 'Physics')
-lessons = ('Урок 01', 'Урок 02')
+books = ('4 mushketera', '5 mushketera')
+subjects = ('Chemistry_2', 'Geography_2', 'Physics_2')
+lessons = ('Урок 03', 'Урок 04')
 
 cursor.execute("INSERT INTO students (name, second_name) VALUES ('Gena', 'Bukin5')")
 student_id = cursor.lastrowid
 cursor.execute("INSERT INTO `groups` (title, start_date, end_date)"
-               " VALUES ('Schastlivy vmeste 5', 'Apr 2005', 'May 2010')")
+               " VALUES ('Schastlivy vmeste 6', 'Apr 2005', 'May 2010')")
 group_id = cursor.lastrowid
 query = "UPDATE students SET group_id = %s WHERE id = %s"
 cursor.execute(query, (group_id, student_id))
 
-for book in books:
-    insert_book(book, student_id, cursor)
+books_tuples = [(book, student_id) for book in books]
+cursor.executemany("INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)", books_tuples)
 
 subject_ids = []
 for subject in subjects:
-    insert_subject(subject, cursor)
-    subject_ids.append(cursor.lastrowid)
+    subject_ids.append(insert_subject(subject, cursor))
 
 lesson_ids = []
 for subject_id in subject_ids:
     for lesson in lessons:
-        insert_lesson(lesson, subject_id, cursor)
-        lesson_ids.append(cursor.lastrowid)
+        lesson_ids.append(insert_lesson(lesson, subject_id, cursor))
 
 vals = [(str(random.randint(1, 100)), lesson_id, student_id) for lesson_id in lesson_ids]
 cursor.executemany("INSERT INTO marks (value, lesson_id, student_id) VALUES (%s, %s, %s)", vals)
