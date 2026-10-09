@@ -21,7 +21,7 @@ for i_file in sorted(os.listdir(args.filepath)):
                 init_index = word_index - 5 if word_index >= 5 else 0
                 end_index = word_index + 6 if word_index <= len(line_arr) - 5 else len(line_arr)
                 result_string = ' '.join(line_arr[init_index:end_index])
-                print(f'Строка {line_index}, время: [{' '.join(line_arr[:2])}]: ' + result_string)
+                print(f'Строка {line_index}, время: [{' '.join(line_arr[:2])}]: {result_string}')
                 if not args.allerrors:
                     is_found = True
                     break
