@@ -32,6 +32,7 @@ parser.add_argument('-a', '--allerrors',
 
 args = parser.parse_args()
 
+
 def print_lines(file_path, _text):
     blocks = {}
     current_time = None
@@ -66,9 +67,8 @@ def print_lines(file_path, _text):
 if os.path.isdir(args.filepath):
     is_found = False
     for file in sorted(os.listdir(args.filepath)):
-        is_found = print_lines(os.path.join(args.filepath,file), args.text)
+        is_found = print_lines(os.path.join(args.filepath, file), args.text)
         if is_found:
             break
 elif os.path.isfile(args.filepath):
     print_lines(args.filepath, args.text)
-
