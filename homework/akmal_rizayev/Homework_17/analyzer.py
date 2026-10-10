@@ -14,7 +14,14 @@ def is_block_start(_line):
 def block_search_and_get_result(__text, block):
     if __text in block:
         line_arr = block.split()
-        word_index = line_arr.index(__text)
+        word_result = None
+        if __text in line_arr:
+            word_result = __text
+        else:
+            for word in line_arr:
+                if __text in word:
+                    word_result = word
+        word_index = line_arr.index(word_result)
         init_index = word_index - 5 if word_index >= 5 else 0
         end_index = word_index + 6 if word_index <= len(line_arr) - 5 else len(line_arr)
         result_string = ' '.join(line_arr[init_index:end_index])
