@@ -18,6 +18,7 @@ def delete_obj(_id):
     response = requests.delete(f'{URL}/object/{_id}', headers=headers)
     return response
 
+
 def make_body():
     return {
         "name": fake.name(),
@@ -26,7 +27,6 @@ def make_body():
             "address": fake.address(),
         },
     }
-
 
 
 @pytest.fixture(scope='session')
