@@ -18,6 +18,16 @@ def delete_obj(_id):
     response = requests.delete(f'{URL}/object/{_id}', headers=headers)
     return response
 
+def make_body():
+    return {
+        "name": fake.name(),
+        "data": {
+            "birth_date": str(fake.date_of_birth()),
+            "address": fake.address(),
+        },
+    }
+
+
 
 @pytest.fixture(scope='session')
 def session():
@@ -36,7 +46,7 @@ def func():
 @pytest.fixture()
 def get_id_created():
     headers = {'Content-Type': 'application/json'}
-    body = {"name": fake.name(), "data": {"birth_date": str(fake.date_of_birth()), "address": str(fake.address())}}
+    body = make_body()
     response = requests.post(f'{URL}/object', headers=headers, json=body)
     yield response.json()["id"]
     delete_obj(response.json()["id"])
@@ -55,8 +65,7 @@ def test_get_all_obj(get_id_created, session, func):
     assert get_id_created in map(lambda x: x["id"], response.json()["data"])
 
 
-@pytest.mark.parametrize('body', [{"name": fake.name(), "data":
-    {"birth_date": str(fake.date_of_birth()), "address": str(fake.address())}} for _ in range(3)])
+@pytest.mark.parametrize('body', [make_body() for _ in range(3)])
 def test_add_obj(body, session, func):
     headers = {'Content-Type': 'application/json'}
     response = requests.post(f'{URL}/object', headers=headers, json=body)
